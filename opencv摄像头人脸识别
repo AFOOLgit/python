@@ -1,0 +1,26 @@
+import  numpy as np
+import  cv2
+if __name__ == '__main__':
+    cap = cv2.VideoCapture(0)#打开本机摄像头,给路径就打开视频q
+    face_detector = cv2.CascadeClassifier(r'D:\Py\100 practice\opencv\haarcascade_frontalface_alt.xml')
+    head = cv2.imread(r"D:\Py\100 practice\opencv\xiongda.jpg")
+    while True:
+        flag,frame = cap.read()
+        if not flag:
+            break
+        gray = cv2.cvtColor(frame,code = cv2.COLOR_BGR2GRAY)
+        faces = face_detector.detectMultiScale(gray,scaleFactor=1.1,minNeighbors=10)
+        for x,y,w,h in faces:
+            # cv2.rectangle(frame,
+             #             pt1= (x,y),
+              #            pt2= (x+w,y+h),
+               #           color= [0,0,255],
+                #          thickness = 2)
+            head2 = cv2.resize(head,dsize=(w,h))
+            frame[y:y+h,x:x+w] = head2
+        cv2.imshow('face',frame)
+        key= cv2.waitKey(1000//24)#//是整除因为时间最小为1毫秒
+        if key == ord('q'):
+            break
+
+    cap.release()
